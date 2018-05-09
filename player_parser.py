@@ -34,6 +34,12 @@ def parse_player_data(player_id):
     print(height)
     print(weight)
 
+    # foot
+    teams = temp.xpath('//div[@class="teams"]')[0]
+    data = teams.xpath('//ul[@class="pl"]/li')[0].text_content()
+    foot = data.split("\n")[2][:1]
+    print(foot)
+
 """
 Main
 """
