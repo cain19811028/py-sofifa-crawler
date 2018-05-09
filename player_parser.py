@@ -61,8 +61,10 @@ def parse_rating_data(player_id):
 """
 Main
 """
-PLAYER_SET = [158023]
+if __name__ == "__main__":
+    
+    PLAYER_SET = [158023]
 
-for player_id in PLAYER_SET:
-    parse_player_data(player_id)
-    parse_rating_data(player_id)
+    for player_id in PLAYER_SET:
+        parse_player_data(player_id)
+        parse_rating_data(player_id)
