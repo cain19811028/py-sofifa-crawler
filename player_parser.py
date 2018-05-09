@@ -12,7 +12,7 @@ def parse_player_data(player_id):
     response = requests.get(url, headers = HEADERS)
     content = html.fromstring(response.text)
 
-    # short_name, full_name, position
+    # short_name, full_name, position, nationality
     player = content.xpath('//div[@class="player"]')[0]
     info = player.xpath('//div[@class="info"]')[0]
     short_name = info.xpath('//h1')[0].text_content().split(' (')[0]
@@ -20,9 +20,12 @@ def parse_player_data(player_id):
     full_name = meta.split('Age ')[0].split('  ')[0]
     position = meta.split('Age ')[0].split('  ')[1]
     position = position.split(' ')
+    nationality = info.xpath('//div[@class="meta"]/span/a')[0].attrib['href']
+    nationality = nationality.split('=')[1]
     print(short_name)
     print(full_name)
     print(position)
+    print(nationality)
 
     # birthday, height, weight
     data = meta.split('Age ')[1]
@@ -62,4 +65,4 @@ PLAYER_SET = [158023]
 
 for player_id in PLAYER_SET:
     parse_player_data(player_id)
-    # parse_rating_data(player_id)
+    parse_rating_data(player_id)
