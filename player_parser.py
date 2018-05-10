@@ -1,3 +1,4 @@
+import datetime
 import requests
 import time
 from lxml import html
@@ -55,8 +56,13 @@ def parse_rating_data(player_id):
 
     # rating
     table = content.xpath('//table[@class="table"]')[0]
-    rating = table.xpath('//td[@class="text-clip"]/span')[0].text_content()
-    print(rating)
+    rating = table.xpath('//td[@class="text-clip"]/span')[0].text_content()    
+
+    today = time.strftime('%Y%m%d',time.localtime(time.time()))
+
+    rating_record = {}
+    rating_record[today] = rating
+    print(rating_record)
 
 """
 Main
