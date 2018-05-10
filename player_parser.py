@@ -56,13 +56,25 @@ def parse_rating_data(player_id):
 
     # rating
     table = content.xpath('//table[@class="table"]')[0]
-    rating = table.xpath('//td[@class="text-clip"]/span')[0].text_content()    
+    rating = table.xpath('//td[@class="text-clip"]/span')[0].text_content() 
 
     today = time.strftime('%Y%m%d',time.localtime(time.time()))
 
     rating_record = {}
     rating_record[today] = rating
     print(rating_record)
+
+    # change_log
+    index = 0
+    change_log = content.xpath('//article[@class="column"]/dl')[0]
+    dt = change_log.xpath('//dt')
+    dd = change_log.xpath('//dd')
+    for d in dd:
+        if "Overall Rating" in d.text_content():
+            date = dt[index].text_content()[10:22]
+            print(date)
+            print(d.text_content())
+        index += 1
 
 """
 Main
@@ -72,5 +84,5 @@ if __name__ == "__main__":
     PLAYER_SET = [158023]
 
     for player_id in PLAYER_SET:
-        parse_player_data(player_id)
+        # parse_player_data(player_id)
         parse_rating_data(player_id)
