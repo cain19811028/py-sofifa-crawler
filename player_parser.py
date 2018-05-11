@@ -1,4 +1,5 @@
 import datetime
+import os
 import requests
 import time
 from lxml import html
@@ -32,8 +33,8 @@ def parse_player_data(player_id):
     data = meta.split('Age ')[1]
     data = data.split(') ')
     birthday = data[0].split('(')[1]
-    birthday = time.mktime(time.strptime(birthday, '%b %d, %Y'))
-    birthday = time.strftime("%Y%m%d", time.gmtime(birthday))
+    birthday = datetime.datetime.strptime(birthday, '%b %d, %Y')
+    birthday = birthday.strftime('%Y%m%d')
     data = data[1].split(' ')
     height = data[0].replace("cm", "")
     weight = data[1].replace("kg", "")
@@ -58,7 +59,7 @@ def parse_rating_data(player_id):
     table = content.xpath('//table[@class="table"]')[0]
     rating = table.xpath('//td[@class="text-clip"]/span')[0].text_content() 
 
-    today = time.strftime('%Y%m%d',time.localtime(time.time()))
+    today = time.strftime('%Y%m%d', time.localtime(time.time()))
 
     rating_record = {}
     rating_record[today] = rating
@@ -71,7 +72,9 @@ def parse_rating_data(player_id):
     dd = change_log.xpath('//dd')
     for d in dd:
         if "Overall Rating" in d.text_content():
-            date = dt[index].text_content()[10:22]
+            date = dt[index].text_content()[10:22].strip()
+            date = datetime.datetime.strptime(date, '%b %d, %Y')
+            date = date.strftime('%Y%m%d')
             print(date)
             print(d.text_content())
         index += 1
@@ -84,5 +87,5 @@ if __name__ == "__main__":
     PLAYER_SET = [158023]
 
     for player_id in PLAYER_SET:
-        # parse_player_data(player_id)
+        parse_player_data(player_id)
         parse_rating_data(player_id)
