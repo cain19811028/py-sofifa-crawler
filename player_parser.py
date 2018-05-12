@@ -2,6 +2,7 @@ import datetime
 import os
 import requests
 import time
+from dao import Dao
 from lxml import html
 
 DOMAIN = "https://sofifa.com/"
@@ -88,6 +89,10 @@ Main
 if __name__ == "__main__":
     
     PLAYER_SET = [158023]
+
+    Dao.init()
+    Dao.create_sofifa_player()
+    Dao.create_rating()
 
     for player_id in PLAYER_SET:
         parse_player_data(player_id)
