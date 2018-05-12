@@ -1,4 +1,5 @@
 import datetime
+import json
 import os
 import requests
 import time
@@ -25,10 +26,6 @@ def parse_player_data(player_id):
     position = position.replace(' ', ',')
     nationality = info.xpath('//div[@class="meta"]/span/a')[0].attrib['href']
     nationality = nationality.split('=')[1]
-    print(short_name)
-    print(full_name)
-    print(position)
-    print(nationality)
 
     # birthday, height, weight
     data = meta.split('Age ')[1]
@@ -39,22 +36,18 @@ def parse_player_data(player_id):
     data = data[1].split(' ')
     height = data[0].replace("cm", "")
     weight = data[1].replace("kg", "")
-    print(birthday)
-    print(height)
-    print(weight)
 
     # foot
     teams = player.xpath('//div[@class="teams"]')[0]
     data = teams.xpath('//ul[@class="pl"]/li')[0].text_content()
     foot = data.split("\n")[2][:1]
-    print(foot)
 
     param = (player_id, full_name, short_name, birthday, nationality, position, height, weight, foot, player_id)
     Dao.upsert_sofifa_player(param)
+    print(param)
 
 def parse_rating_data(player_id):
     url  = DOMAIN + "player/" + str(player_id) + "/changeLog"
-    print(url)
 
     response = requests.get(url, headers = HEADERS)
     content = html.fromstring(response.text)
@@ -84,7 +77,9 @@ def parse_rating_data(player_id):
             rating_record[date] = rating
         index += 1
 
-    print(rating_record)
+    param = (player_id, json.dumps(rating_record), player_id)
+    Dao.upsert_rating(param)
+    print(param)
 
 """
 Main
