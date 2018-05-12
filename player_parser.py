@@ -22,7 +22,7 @@ def parse_player_data(player_id):
     meta = info.xpath('//div[@class="meta"]/span')[0].text_content()
     full_name = meta.split('Age ')[0].split('  ')[0]
     position = meta.split('Age ')[0].split('  ')[1]
-    position = position.split(' ')
+    position = position.replace(' ', ',')
     nationality = info.xpath('//div[@class="meta"]/span/a')[0].attrib['href']
     nationality = nationality.split('=')[1]
     print(short_name)
@@ -48,6 +48,9 @@ def parse_player_data(player_id):
     data = teams.xpath('//ul[@class="pl"]/li')[0].text_content()
     foot = data.split("\n")[2][:1]
     print(foot)
+
+    param = (player_id, full_name, short_name, birthday, nationality, position, height, weight, foot, player_id)
+    Dao.upsert_sofifa_player(param)
 
 def parse_rating_data(player_id):
     url  = DOMAIN + "player/" + str(player_id) + "/changeLog"

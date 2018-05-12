@@ -27,7 +27,7 @@ class Dao(object):
             name varchar(20),
             birthday varchar(8),
             nationality int,
-            position json,
+            position varchar(10),
             height int,
             weight int,
             foot varchar(1),
@@ -46,3 +46,11 @@ class Dao(object):
         )
         """
         Dao.cursor.execute(sql)
+
+    @staticmethod
+    def upsert_sofifa_player(param):
+        sql = """
+        insert into sofifa_player values(%s, %s, %s, %s, %s, %s, %s, %s, %s) 
+        on duplicate key update id = %s
+        """
+        Dao.cursor.execute(sql, param)
