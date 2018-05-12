@@ -63,7 +63,6 @@ def parse_rating_data(player_id):
 
     rating_record = {}
     rating_record[today] = rating
-    print(rating_record)
 
     # change_log
     index = 0
@@ -75,9 +74,13 @@ def parse_rating_data(player_id):
             date = dt[index].text_content()[10:22].strip()
             date = datetime.datetime.strptime(date, '%b %d, %Y')
             date = date.strftime('%Y%m%d')
-            print(date)
-            print(d.text_content())
+            
+            rating = d.text_content().split('Overall Rating ')[1]
+            rating = rating.split('  ')[1].split(' ')[0]
+            rating_record[date] = rating
         index += 1
+
+    print(rating_record)
 
 """
 Main
