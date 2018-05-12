@@ -74,7 +74,7 @@ def parse_rating_data(player_id):
             
             rating = d.text_content().split('Overall Rating ')[1]
             rating = rating.split('  ')[1].split(' ')[0]
-            rating_record[date] = rating
+            rating_record[date] = rating.replace('\r\n', '')
         index += 1
 
     param = (player_id, json.dumps(rating_record), player_id)
@@ -86,7 +86,7 @@ Main
 """
 if __name__ == "__main__":
     
-    PLAYER_SET = [158023]
+    PLAYER_SET = [193080]
 
     Dao.init()
     Dao.create_sofifa_player()
