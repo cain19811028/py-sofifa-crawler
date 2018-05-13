@@ -92,7 +92,7 @@ def convert_rating_data(rating_record):
     raw_year = 1911
     raw_rating = 0
     rating_set = {}
-    for date, rating in rating_record.items():
+    for date, rating in sorted(rating_record.items()):
         temp_year = date[:4]
         temp_key = "y" + temp_year
         rating = int(rating)
@@ -119,7 +119,7 @@ Main
 """
 if __name__ == "__main__":
     
-    PLAYER_SET = [192985]
+    PLAYER_SET = [153079]
 
     Dao.init()
     Dao.create_sofifa_player()
