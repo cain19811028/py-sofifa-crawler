@@ -77,16 +77,45 @@ def parse_rating_data(player_id):
             rating_record[date] = rating.replace('\r\n', '')
         index += 1
 
-    param = (player_id, json.dumps(rating_record), player_id)
+    rating_record = json.dumps(convert_rating_data(rating_record))
+    param = (player_id, rating_record, rating_record)
     Dao.upsert_rating(param)
     print(param)
+
+def convert_rating_data(rating_record):
+    temp_year = 1911
+    new_year = 1911
+    raw_year = 1911
+    raw_rating = 0
+    rating_set = {}
+    for date, rating in rating_record.items():
+        temp_year = date[:4]
+        temp_key = "y" + temp_year
+        rating = int(rating)
+
+        new_year = int(temp_year)
+        if raw_year != 1911:
+            if new_year - raw_year > 1:
+                for count in range(1, new_year - raw_year):
+                    rating_set["y" + str(raw_year + count)] = raw_rating
+
+        if temp_key in rating_set:
+            if rating > rating_set[temp_key]:
+                rating_set[temp_key] = rating
+        else:
+            rating_set[temp_key] = rating
+
+        raw_year = int(temp_year)
+        raw_rating = rating
+
+    return rating_set
 
 """
 Main
 """
 if __name__ == "__main__":
     
-    PLAYER_SET = [193080]
+    PLAYER_SET = [192985]
 
     Dao.init()
     Dao.create_sofifa_player()
@@ -94,4 +123,4 @@ if __name__ == "__main__":
 
     for player_id in PLAYER_SET:
         parse_player_data(player_id)
-        parse_rating_data(player_id)
+        parse_rating_data(player_id)  

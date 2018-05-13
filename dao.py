@@ -59,6 +59,6 @@ class Dao(object):
     def upsert_rating(param):
         sql = """
         insert into rating values(%s, %s) 
-        on duplicate key update id = %s
+        on duplicate key update rating = %s
         """
         Dao.cursor.execute(sql, param)
