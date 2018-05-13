@@ -51,7 +51,8 @@ class Dao(object):
     def upsert_sofifa_player(param):
         sql = """
         insert into sofifa_player values(%s, %s, %s, %s, %s, %s, %s, %s, %s) 
-        on duplicate key update id = %s
+        on duplicate key update full_name = %s, name = %s, birthday = %s, 
+        nationality = %s, position = %s, height = %s, weight = %s, foot = %s
         """
         Dao.cursor.execute(sql, param)
 

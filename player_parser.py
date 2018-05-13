@@ -42,7 +42,11 @@ def parse_player_data(player_id):
     data = teams.xpath('//ul[@class="pl"]/li')[0].text_content()
     foot = data.split("\n")[2][:1]
 
-    param = (player_id, full_name, short_name, birthday, nationality, position, height, weight, foot, player_id)
+    param = (
+        player_id, 
+        full_name, short_name, birthday, nationality, position, height, weight, foot, 
+        full_name, short_name, birthday, nationality, position, height, weight, foot
+    )
     Dao.upsert_sofifa_player(param)
     print(param)
 
