@@ -42,13 +42,11 @@ def parse_player_data(player_id):
     data = teams.xpath('//ul[@class="pl"]/li')[0].text_content()
     foot = data.split("\n")[2][:1]
 
-    param = (
+    return (
         player_id, 
         full_name, short_name, birthday, nationality, position, height, weight, foot, 
         full_name, short_name, birthday, nationality, position, height, weight, foot
     )
-    Dao.upsert_sofifa_player(param)
-    print(param)
 
 def parse_rating_data(player_id):
     url  = DOMAIN + "player/" + str(player_id) + "/changeLog"
@@ -82,9 +80,7 @@ def parse_rating_data(player_id):
         index += 1
 
     rating_record = json.dumps(convert_rating_data(rating_record))
-    param = (player_id, rating_record, rating_record)
-    Dao.upsert_rating(param)
-    print(param)
+    return (player_id, rating_record, rating_record)
 
 def convert_rating_data(rating_record):
     temp_year = 1911
@@ -130,5 +126,11 @@ if __name__ == "__main__":
     Dao.create_rating()
 
     for player_id in PLAYER_SET:
-        parse_player_data(player_id)
-        parse_rating_data(player_id)  
+        player = parse_player_data(player_id)
+        rating = parse_rating_data(player_id)
+
+        if json.loads(rating[1])["max_rating"] >= 80:
+            Dao.upsert_sofifa_player(player)
+            Dao.upsert_rating(rating)
+            print(player)
+            print(rating)
