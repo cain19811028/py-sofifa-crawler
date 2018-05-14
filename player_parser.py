@@ -91,11 +91,14 @@ def convert_rating_data(rating_record):
     new_year = 1911
     raw_year = 1911
     raw_rating = 0
+    max_rating = 0
     rating_set = {}
     for date, rating in sorted(rating_record.items()):
         temp_year = date[:4]
         temp_key = "y" + temp_year
         rating = int(rating)
+        if rating > max_rating:
+            max_rating = rating
 
         new_year = int(temp_year)
         if raw_year != 1911:
@@ -112,6 +115,7 @@ def convert_rating_data(rating_record):
         raw_year = int(temp_year)
         raw_rating = rating
 
+    rating_set["max_rating"] = max_rating
     return rating_set
 
 """
@@ -119,7 +123,7 @@ Main
 """
 if __name__ == "__main__":
     
-    PLAYER_SET = [153079]
+    PLAYER_SET = [193080]
 
     Dao.init()
     Dao.create_sofifa_player()
