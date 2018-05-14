@@ -137,7 +137,13 @@ if __name__ == "__main__":
     Dao.create_sofifa_player()
     Dao.create_rating()
 
-    player_set = get_all_player_by_team_id(11)
+    """
+    team_id :
+    10 = Manchester City,     11 = Manchester United
+    18 = Tottenham Hotspur,    9 = Liverpool
+     5 = Chelsea,              1 = Arsenal
+    """
+    player_set = get_all_player_by_team_id(9)
     print(player_set)
 
     for player_id in player_set:

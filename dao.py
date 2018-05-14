@@ -24,7 +24,7 @@ class Dao(object):
         create table if not exists sofifa_player (
             id varchar(8) not null,
             full_name varchar(40),
-            name varchar(20),
+            name varchar(25),
             birthday varchar(8),
             nationality int,
             position varchar(10),
