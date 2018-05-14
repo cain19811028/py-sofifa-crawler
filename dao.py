@@ -27,7 +27,7 @@ class Dao(object):
             name varchar(25),
             birthday varchar(8),
             nationality int,
-            position varchar(10),
+            position varchar(15),
             height int,
             weight int,
             foot varchar(1),
