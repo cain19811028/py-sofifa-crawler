@@ -120,13 +120,13 @@ def get_all_player_by_team_id(team_id):
     response = requests.get(url, headers = HEADERS)
     content = html.fromstring(response.text)
 
-    player_set = []
+    player_list = []
     table = content.xpath('//table')[1]
     figure = table.xpath('//figure[@class="avatar"]/img')
     for f in figure:
-        player_set.append(int(f.attrib['id']))
+        player_list.append(int(f.attrib['id']))
 
-    return player_set
+    return player_list
 
 """
 Main
@@ -139,14 +139,15 @@ if __name__ == "__main__":
 
     """
     team_id :
-    10 = Manchester City,     11 = Manchester United
-    18 = Tottenham Hotspur,    9 = Liverpool
-     5 = Chelsea,              1 = Arsenal
+     10 = Manchester City,     11 = Manchester United
+     18 = Tottenham Hotspur,    9 = Liverpool
+      5 = Chelsea,              1 = Arsenal
+    241 = Barcelona 
     """
-    player_set = get_all_player_by_team_id(1)
-    print(player_set)
+    player_list = get_all_player_by_team_id(241)
+    print(player_list)
 
-    for player_id in player_set:
+    for player_id in player_list:
         player = parse_player_data(player_id)
         rating = parse_rating_data(player_id)
 
