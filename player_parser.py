@@ -67,7 +67,7 @@ def parse_rating_data(player_id):
     index = 0
     change_log = content.xpath('//article[@class="column"]/dl')
     if len(change_log) > 0:
-        change_log = content.xpath('//article[@class="column"]/dl')[0]
+        change_log = change_log[0]
         dt = change_log.xpath('//dt')
         dd = change_log.xpath('//dd')
         for d in dd:
@@ -145,8 +145,9 @@ if __name__ == "__main__":
      18 = Tottenham Hotspur,    9 = Liverpool
       5 = Chelsea,              1 = Arsenal
     241 = Barcelona,          243 = Real Madrid
+     45 = Juventus
     """
-    player_list = get_all_player_by_team_id(243)
+    player_list = get_all_player_by_team_id(45)
     print(player_list)
 
     for player_id in player_list:
