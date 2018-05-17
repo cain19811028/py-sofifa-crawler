@@ -65,19 +65,21 @@ def parse_rating_data(player_id):
 
     # change_log
     index = 0
-    change_log = content.xpath('//article[@class="column"]/dl')[0]
-    dt = change_log.xpath('//dt')
-    dd = change_log.xpath('//dd')
-    for d in dd:
-        if "Overall Rating" in d.text_content():
-            date = dt[index].text_content()[10:22].strip()
-            date = datetime.datetime.strptime(date, '%b %d, %Y')
-            date = date.strftime('%Y%m%d')
-            
-            rating = d.text_content().split('Overall Rating ')[1]
-            rating = rating.split('  ')[1].split(' ')[0]
-            rating_record[date] = rating.replace('\r\n', '')
-        index += 1
+    change_log = content.xpath('//article[@class="column"]/dl')
+    if len(change_log) > 0:
+        change_log = content.xpath('//article[@class="column"]/dl')[0]
+        dt = change_log.xpath('//dt')
+        dd = change_log.xpath('//dd')
+        for d in dd:
+            if "Overall Rating" in d.text_content():
+                date = dt[index].text_content()[10:22].strip()
+                date = datetime.datetime.strptime(date, '%b %d, %Y')
+                date = date.strftime('%Y%m%d')
+                
+                rating = d.text_content().split('Overall Rating ')[1]
+                rating = rating.split('  ')[1].split(' ')[0]
+                rating_record[date] = rating.replace('\r\n', '')
+            index += 1
 
     rating_record = json.dumps(convert_rating_data(rating_record))
     return (player_id, rating_record, rating_record)
@@ -150,7 +152,7 @@ if __name__ == "__main__":
     for player_id in player_list:
         player = parse_player_data(player_id)
         rating = parse_rating_data(player_id)
-
+        
         if json.loads(rating[1])["max_rating"] >= 80:
             Dao.upsert_sofifa_player(player)
             Dao.upsert_rating(rating)
