@@ -142,9 +142,9 @@ if __name__ == "__main__":
      10 = Manchester City,     11 = Manchester United
      18 = Tottenham Hotspur,    9 = Liverpool
       5 = Chelsea,              1 = Arsenal
-    241 = Barcelona 
+    241 = Barcelona,          243 = Real Madrid
     """
-    player_list = get_all_player_by_team_id(241)
+    player_list = get_all_player_by_team_id(243)
     print(player_list)
 
     for player_id in player_list:
