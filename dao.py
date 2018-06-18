@@ -48,6 +48,17 @@ class Dao(object):
         Dao.cursor.execute(sql)
 
     @staticmethod
+    def create_sofifa_nationality():
+        sql = """
+        create table if not exists sofifa_nationality (
+            id varchar(3) not null,
+            name varchar(50),
+            primary key (id)
+        )
+        """
+        Dao.cursor.execute(sql)
+
+    @staticmethod
     def upsert_sofifa_player(param):
         sql = """
         insert into sofifa_player values(%s, %s, %s, %s, %s, %s, %s, %s, %s) 
