@@ -18,13 +18,19 @@ def get_all_time_node():
 
 def get_all_nationality(time_node):
     test = time_node[0]
-    print(test)
     url = DOMAIN + test
     response = requests.get(url, headers = HEADERS)
     content = html.fromstring(response.text)
-    print(content.text_content())
-    nationality_list = []
-    return nationality_list
+    select = content.xpath('//select[@name="na[]"]')[0]
+    options = select.xpath('.//option')
+
+    result = {}
+    for opt in options:
+        key = opt.xpath('.//@value')
+        if len(key) > 0:
+            result[key[0]] = opt.text_content()
+
+    return result
 
 """
 Main
@@ -35,5 +41,5 @@ if __name__ == "__main__":
     Dao.create_sofifa_nationality()
 
     time_node = get_all_time_node()
-    nationality_list = get_all_nationality(time_node)
-    print(nationality_list)
+    nationality = get_all_nationality(time_node)
+    print(nationality)
