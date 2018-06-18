@@ -74,3 +74,11 @@ class Dao(object):
         on duplicate key update rating = %s
         """
         Dao.cursor.execute(sql, param)
+
+    @staticmethod
+    def upsert_nationality(param):
+        sql = """
+        insert into sofifa_nationality values(%s, %s) 
+        on duplicate key update name = %s
+        """
+        Dao.cursor.execute(sql, param)

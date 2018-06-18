@@ -22,6 +22,7 @@ def get_all_nationality(time_node):
     index = 1
     result = {}
     print("time node count : " + str(len(time_node)))
+    
     for link in time_node:
         url = DOMAIN + link
         print(str(index) + ". " + url)
@@ -51,3 +52,6 @@ if __name__ == "__main__":
     time_node = get_all_time_node()
     nationality = get_all_nationality(time_node)
     print(nationality)
+
+    for k, v in nationality.items():
+        Dao.upsert_nationality((k, v, v ))
