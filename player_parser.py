@@ -138,7 +138,7 @@ if __name__ == "__main__":
 
     Dao.init()
     Dao.create_sofifa_player()
-    Dao.create_rating()
+    Dao.create_sofifa_rating()
 
     """
     team_id :
@@ -157,7 +157,7 @@ if __name__ == "__main__":
         
         if json.loads(rating[1])["max_rating"] >= 80:
             Dao.upsert_sofifa_player(player)
-            Dao.upsert_rating(rating)
+            Dao.upsert_sofifa_rating(rating)
             print(player)
             print(rating)
 

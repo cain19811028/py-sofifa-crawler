@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import pymysql
 
 class Dao(object):
@@ -37,9 +38,9 @@ class Dao(object):
         Dao.cursor.execute(sql)
 
     @staticmethod
-    def create_rating():
+    def create_sofifa_rating():
         sql = """
-        create table if not exists rating (
+        create table if not exists sofifa_rating (
             id varchar(8) not null,
             rating json,
             primary key (id)
@@ -68,9 +69,9 @@ class Dao(object):
         Dao.cursor.execute(sql, param)
 
     @staticmethod
-    def upsert_rating(param):
+    def upsert_sofifa_rating(param):
         sql = """
-        insert into rating values(%s, %s) 
+        insert into sofifa_rating values(%s, %s) 
         on duplicate key update rating = %s
         """
         Dao.cursor.execute(sql, param)
