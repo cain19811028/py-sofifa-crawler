@@ -73,7 +73,7 @@ def parse_rating_data(player_id):
         dd = change_log.xpath('//dd')
         for d in dd:
             if "Overall Rating" in d.text_content():
-                date = dt[index].text_content()[10:22].strip()
+                date = dt[index].text_content()[-14:].strip()
                 date = datetime.datetime.strptime(date, '%b %d, %Y')
                 date = date.strftime('%Y%m%d')
                 
@@ -94,7 +94,7 @@ def convert_rating_data(rating_record):
     rating_set = {}
     for date, rating in sorted(rating_record.items()):
         temp_year = date[:4]
-        temp_key = "y" + temp_year
+        temp_key = str(temp_year)
         rating = int(rating)
         if rating > max_rating:
             max_rating = rating
@@ -103,7 +103,7 @@ def convert_rating_data(rating_record):
         if raw_year != 1911:
             if new_year - raw_year > 1:
                 for count in range(1, new_year - raw_year):
-                    rating_set["y" + str(raw_year + count)] = raw_rating
+                    rating_set[str(raw_year + count)] = raw_rating
 
         if temp_key in rating_set:
             if rating > rating_set[temp_key]:
@@ -148,7 +148,7 @@ if __name__ == "__main__":
     241 = Barcelona,          243 = Real Madrid
      45 = Juventus
     """
-    player_list = get_all_player_by_team_id(45)
+    player_list = get_all_player_by_team_id(10)
     print(player_list)
 
     for player_id in player_list:
@@ -161,4 +161,4 @@ if __name__ == "__main__":
             print(player)
             print(rating)
 
-        time.sleep(1)
+        time.sleep(0.5)
