@@ -117,19 +117,52 @@ def convert_rating_data(rating_record):
     rating_set["max_rating"] = max_rating
     return rating_set
 
-def get_all_player_by_team_id(team_id):
+def get_player_by_team_id(team_id):
     url  = DOMAIN + "team/" + str(team_id)
 
     response = requests.get(url, headers = HEADERS)
     content = html.fromstring(response.text)
 
-    player_list = []
-    table = content.xpath('//table')[1]
+    player_set = []
+    table = content.xpath('//table')
+    table = table[1] if len(table) > 1 else table[0]
     figure = table.xpath('//figure[@class="avatar"]/img')
+    
     for f in figure:
-        player_list.append(int(f.attrib['id']))
+        player_set.append(int(f.attrib['id']))
 
-    return player_list
+    return player_set
+
+def get_all_time_player_by_team_id(team_id):
+
+    index = 1
+    time_node = get_all_time_node()
+    print("time node count : " + str(len(time_node)))
+
+    player_set = set([])
+    for link in time_node:
+        url = DOMAIN + "team/" + str(team_id) + link[1:]
+        print(str(index) + ". " + url)
+        response = requests.get(url, headers = HEADERS)
+        content = html.fromstring(response.text)
+
+        table = content.xpath('//table')
+        table = table[1] if len(table) > 1 else table[0]
+        figure = table.xpath('//figure[@class="avatar"]/img')
+        for f in figure:
+            player_set.add(int(f.attrib['id']))
+
+        index += 1
+        time.sleep(0.1)
+
+    return player_set
+
+def get_all_time_node():
+
+    response = requests.get(DOMAIN, headers = HEADERS)
+    content = html.fromstring(response.text)
+
+    return content.xpath('//div[@class="card-body"]/a/@href')
 
 """
 Main
@@ -148,10 +181,12 @@ if __name__ == "__main__":
     241 = Barcelona,          243 = Real Madrid
      45 = Juventus
     """
-    player_list = get_all_player_by_team_id(10)
-    print(player_list)
+    player_set = get_all_time_player_by_team_id(10)
+    # player_set = get_player_by_team_id(10)
+    print("player count : " + str(len(player_set)))
+    print(player_set)
 
-    for player_id in player_list:
+    for player_id in player_set:
         player = parse_player_data(player_id)
         rating = parse_rating_data(player_id)
         
@@ -161,4 +196,4 @@ if __name__ == "__main__":
             print(player)
             print(rating)
 
-        time.sleep(0.5)
+        time.sleep(0.1)
